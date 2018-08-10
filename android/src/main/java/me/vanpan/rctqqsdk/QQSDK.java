@@ -843,4 +843,79 @@ public class QQSDK extends ReactContextBaseJavaModule {
         inputStream.close();
         return byteArrayOutputStream.toByteArray();
     }
+
+    @ReactMethod
+    public void getUserInfo(Promise promise) {
+        Activity curActivity = getCurrentActivity();
+        if (curActivity == null) {
+            promise.reject(new Exception("current activity is null"));
+            return;
+        }
+        this.mPromise = promise;
+        if (mTencent.isSessionValid()) {
+            reqUserInfo(mTencent.getOpenId());
+        } else {
+            mTencent.login(getCurrentActivity(), "all", loginListener);
+        }
+    }
+
+    private void reqUserInfo(final String openId) {
+        if (mTencent != null && mTencent.isSessionValid()) {
+            IUiListener listener = new IUiListener() {
+
+                @Override
+                public void onError(UiError e) {
+                    reject("500",e.errorMessage);
+                }
+
+                @Override
+                public void onComplete(final Object response) {
+                    if (null == response) {
+                        reject("600",QQ_RESPONSE_ERROR);
+                        return;
+                    }
+                    JSONObject jsonResponse = (JSONObject) response;
+                    if (jsonResponse.length() == 0) {
+                        reject("600",QQ_RESPONSE_ERROR);
+                        return;
+                    }
+                    JSONObject jsonParams = (JSONObject) response;
+                    WritableMap result = Arguments.createMap();
+                    result.putString("ttpId", openId);
+                    try {
+                        result.putString("nick", jsonParams.getString("nickname"));
+                        result.putString("smallPhoto", jsonParams.getString("figureurl_qq_1"));
+                        //// 1=man=男,2=woman=女
+                        result.putInt("sex", "女".equals(jsonParams.getString("gender")) ? 2
+                                : 1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        reject("600", QQ_RESPONSE_ERROR);
+                    }
+                    resolve(result);
+                }
+
+                @Override
+                public void onCancel() {
+                    reject("603",QQ_CANCEL_BY_USER)
+                }
+            };
+            UserInfo mInfo = new UserInfo(getReactApplicationContext(), mTencent.getQQToken());
+            mInfo.getUserInfo(listener);
+        } else {
+            reject("600", QQ_RESPONSE_ERROR);
+        }
+    }
+
+    private void reject(String code, String msg) {
+        if (mPromise != null) {
+            mPromise.reject(code, msg);
+        }
+    }
+
+    private void resolve(WritableMap result) {
+        if (mPromise != null) {
+            mPromise.resolve(result);
+        }
+    }
 }

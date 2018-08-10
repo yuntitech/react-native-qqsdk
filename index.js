@@ -6,6 +6,7 @@ import {
 
 const {QQSDK} =  NativeModules;
 export const isQQClientInstalled = QQSDK.checkClientInstalled;
+export const getUserInfo = QQSDK.getUserInfo;
 export const ssoLogin = QQSDK.ssoLogin;
 export const logout = QQSDK.logout;
 export const shareScene = {'QQ': QQSDK.QQ, 'QQZone': QQSDK.QQZone, 'Favorite': QQSDK.Favorite};
