@@ -897,7 +897,7 @@ public class QQSDK extends ReactContextBaseJavaModule {
 
                 @Override
                 public void onCancel() {
-                    reject("603",QQ_CANCEL_BY_USER)
+                    reject("603",QQ_CANCEL_BY_USER);
                 }
             };
             UserInfo mInfo = new UserInfo(getReactApplicationContext(), mTencent.getQQToken());
