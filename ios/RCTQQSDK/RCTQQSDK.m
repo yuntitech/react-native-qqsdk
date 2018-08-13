@@ -438,9 +438,11 @@ RCT_EXPORT_METHOD(shareVideo:(NSString *)previewUrl
 }
 - (NSDictionary *)makeResultWithUserId:(NSString *)userId
                            accessToken:(NSString *)accessToken
+                           consumerKey:(NSString *)consumerKey
                         expirationDate:(NSDate *)expirationDate {
     NSDictionary *result = @{ @"userid" : userId,
                               @"access_token" : accessToken,
+                              @"consumer_key":consumerKey,
                               @"expires_time" : [NSString stringWithFormat:@"%f", [expirationDate timeIntervalSince1970] * 1000] };
     return result;
 }
@@ -535,6 +537,7 @@ RCT_EXPORT_METHOD(shareVideo:(NSString *)previewUrl
     if (tencentOAuth.accessToken && 0 != [tencentOAuth.accessToken length] && loginResolve) {
         NSDictionary *result = [self makeResultWithUserId:tencentOAuth.openId
                                               accessToken:tencentOAuth.accessToken
+                                              consumerKey:tencentOAuth.appId
                                            expirationDate:tencentOAuth.expirationDate];
         loginResolve(result);
         loginReject = nil;

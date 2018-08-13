@@ -754,6 +754,7 @@ public class QQSDK extends ReactContextBaseJavaModule {
                 map.putString("userid", mTencent.getOpenId());
                 map.putString("access_token", mTencent.getAccessToken());
                 map.putDouble("expires_time", mTencent.getExpiresIn());
+                map.putString("consumer_key", mTencent.getAppId());
                 mPromise.resolve(map);
             } else {
                 mPromise.reject("600",QQ_RESPONSE_ERROR);
