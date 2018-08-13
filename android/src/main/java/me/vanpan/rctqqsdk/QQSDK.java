@@ -132,12 +132,7 @@ public class QQSDK extends ReactContextBaseJavaModule {
             promise.reject("405",ACTIVITY_DOES_NOT_EXIST);
             return;
         }
-        Boolean installed = mTencent.isSupportSSOLogin(currentActivity);
-        if (installed) {
-            promise.resolve(true);
-        } else {
-            promise.reject("404", QQ_Client_NOT_INSYALLED_ERROR);
-        }
+        promise.resolve(isQQInstalled(currentActivity));
     }
 
     @ReactMethod
@@ -920,4 +915,20 @@ public class QQSDK extends ReactContextBaseJavaModule {
             mPromise.resolve(result);
         }
     }
+
+    public boolean isQQInstalled(Context var1) {
+        PackageManager var2 = var1.getPackageManager();
+        List var3 = var2.getInstalledPackages(0);
+        if (var3 != null) {
+            for (int var4 = 0; var4 < var3.size(); ++var4) {
+                String var5 = ((PackageInfo) var3.get(var4)).packageName;
+                if (var5.equals("com.tencent.mobileqq")) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
