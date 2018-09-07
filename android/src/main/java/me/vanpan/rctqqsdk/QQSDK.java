@@ -933,19 +933,19 @@ public class QQSDK extends ReactContextBaseJavaModule {
     }
 
     private void reject(String code, String msg) {
-        if (canInvoked("mReject")) {
+        if (canInvoke("mReject")) {
             mPromise.reject(code, msg);
         }
     }
 
     private void resolve(WritableMap result) {
-        if (canInvoked("mResolve")) {
+        if (canInvoke("mResolve")) {
             mPromise.resolve(result);
         }
     }
 
     private void resolve(boolean result) {
-        if (canInvoked("mResolve")) {
+        if (canInvoke("mResolve")) {
             mPromise.resolve(result);
         }
     }
@@ -965,7 +965,7 @@ public class QQSDK extends ReactContextBaseJavaModule {
         return false;
     }
 
-    private boolean canInvoked(String fieldStr) {
+    private boolean canInvoke(String fieldStr) {
         if (mPromise == null) {
             return false;
         }
