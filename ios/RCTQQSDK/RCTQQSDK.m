@@ -41,6 +41,10 @@ RCT_EXPORT_MODULE()
     return self;
 }
 
++ (BOOL)requiresMainQueueSetup{
+    return YES;
+}
+
 - (NSArray<NSString *> *)supportedEvents {
     return @[];
 }
