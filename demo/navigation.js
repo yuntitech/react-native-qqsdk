@@ -1,21 +1,15 @@
-import React, {
-  Component,
-  PropTypes,
-} from 'react';
-import {
-  Platform,
-  BackAndroid,
-} from 'react-native';
-import {Navigator} from 'react-native-deprecated-custom-components';
+import React, { Component, PropTypes } from "react";
+import { Platform, BackHandler } from "react-native";
+import { Navigator } from "react-native-deprecated-custom-components";
 let _navigator;
 export default class Navigation extends Component {
   static propTypes = {
-    initialRoute: PropTypes.object.isRequired,
+    initialRoute: PropTypes.object.isRequired
   };
 
   componentDidMount() {
-    if (Platform.OS === 'android') {
-      BackAndroid.addEventListener('hardwareBackPress', () => {
+    if (Platform.OS === "android") {
+      BackHandler.addEventListener("hardwareBackPress", () => {
         const routesList = _navigator.getCurrentRoutes();
         if (routesList.length > 1) {
           _navigator.pop();
@@ -27,7 +21,7 @@ export default class Navigation extends Component {
   }
 
   componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress');
+    BackHandler.removeEventListener("hardwareBackPress");
   }
 
   configureScene(route) {
@@ -40,22 +34,28 @@ export default class Navigation extends Component {
   render() {
     return (
       <Navigator
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         initialRoute={this.props.initialRoute}
-        ref={(navigator) => {
+        ref={navigator => {
           _navigator = navigator;
         }}
         configureScene={this.configureScene.bind(this)}
         renderScene={(route, navigator) => {
-          return <route.component navigator={navigator} {...route} {...route.passProps} />;
+          return (
+            <route.component
+              navigator={navigator}
+              {...route}
+              {...route.passProps}
+            />
+          );
         }}
       />
     );
   }
 }
-export const push = (route) => {
+export const push = route => {
   _navigator && _navigator.push(route);
 };
-export const resetTo = (route) => {
+export const resetTo = route => {
   _navigator && _navigator.resetTo(route);
 };
