@@ -39,23 +39,5 @@
   },
   "peerDependencies": {
     "react-native": ">=0.40"
-  },
-  "rnpm": {
-    "ios": {
-      "sharedLibraries": [
-        "libz",
-        "libiconv",
-        "libsqlite3",
-        "libstdc++",
-        "Security",
-        "SystemConfiguration",
-        "CoreTelephony",
-        "CoreGraphics"
-      ]
-    },
-    "commands": {
-      "postlink": "node node_modules/react-native-qqsdk/scripts/postlink/postlink",
-      "postunlink": "node node_modules/react-native-qqsdk/scripts/postunlink/postunlink"
-    }
   }
 }
